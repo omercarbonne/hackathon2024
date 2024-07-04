@@ -65,6 +65,29 @@ class LinearRegModel:
         plt.savefig("loss.png")
         plt.clf()
 
+    def predictions_graph(self):
+        pred_y = self.model.predict(self.X_test)
+
+        plt.figure(figsize=(8, 6))
+        plt.scatter(pred_y, self.y_test, color='blue', marker='o', label='Actual vs Predicted')
+
+        # Adding a diagonal line for perfect prediction comparison
+        plt.plot(pred_y, pred_y, color='red', linestyle='--', label='Perfect Prediction')
+
+        # Adding labels and title
+        plt.xlabel('Predicted Values')
+        plt.ylabel('Actual Values')
+        plt.title('Scatter Plot of Predicted vs Actual Values')
+
+        # Adding legend and grid
+        plt.legend()
+        plt.grid(True)
+
+        # Display the plot
+        plt.savefig("predictions_accuracy.png")
+
+
+
 
     def get_sample(self,X: pd.DataFrame, y: pd.Series,  per: int) -> (pd.DataFrame, pd.Series):
         combine = pd.concat([X, y], axis=1)
