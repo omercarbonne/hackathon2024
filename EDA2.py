@@ -6,6 +6,30 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
+def plot_total_time_vs_num_of_passengers_colored(df_path: str):
+    # Load the data
+    df = pd.read_csv(df_path, encoding="ISO-8859-8")
+    
+    # Define colors for clusters
+    cluster_colors = {
+        0: 'magenta', 1: 'blue', 2: 'green', 3: 'red', 4: 'purple', 5: 'orange',
+        6: 'brown', 7: 'pink', 8: 'gray', 9: 'olive', 10: 'cyan'
+    }
+    
+     # Plotting
+    plt.figure(figsize=(10, 6))
+    for cluster, color in cluster_colors.items():
+        cluster_data = df[df['cluster'] == cluster]
+        plt.scatter(cluster_data['total_passengers'], cluster_data['total_time'], color=color, label=f'Cluster {cluster}', alpha=0.6)
+
+    plt.title('Total Time vs Number of Passengers (Colored by Clusters)', fontsize=14, fontweight='bold')
+    plt.xlabel('Number of Passengers', fontsize=12)
+    plt.ylabel('Total Time', fontsize=12)
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("Total_Time_vs_Number_of_Passengers.png")
+
 def plot_total_time_vs_num_of_stations(df_path: str):
     # Load the data
     df = pd.read_csv(df_path, encoding="ISO-8859-8")
@@ -176,5 +200,4 @@ def feature_evaluation(df_path: str):
 
 
 if __name__ == '__main__':
-    plot_total_time_vs_num_of_stations("preprocess_train_bus_schedule.csv")
-    plot_correlations("preprocess_train_bus_schedule.csv")
+    plot_total_time_vs_num_of_passengers_colored("preprocess_train_bus_schedule.csv")
