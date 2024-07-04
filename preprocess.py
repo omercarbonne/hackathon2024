@@ -126,8 +126,6 @@ def delete_row_task1(row):
     del row[9]
     # remove the alternative column
     del row[6]
-    # remove the cluster column
-    #del row[6]
     # remove the trip id unique station and trip id unique
     del row[3]
     del row[2]
@@ -175,7 +173,6 @@ def preprocess_train_task_1(df_path: str) -> str:
         del header[10]
         del header[9]
         del header[6]
-        #del header[6]
         del header[3]
         del header[2]
         csv_writer.writerow(header)
@@ -186,7 +183,18 @@ def preprocess_train_task_1(df_path: str) -> str:
                 csv_writer.writerow(processed_row)
     return preprocess_df_path
 
+def preprocess_train_task_1_base_line(df_path: str) -> str:
+    preprocess_df_path = "baseline_preprocess_"+df_path
+    df = pd.read_csv(df_path, encoding="ISO-8859-8")
+    # delete null rows
+    df = df.dropna()
+    # delete all colums except trip_id_unique_station, passengers_continue, arrival_is_estimated,mekadem_nipuach_luz,passengers_continue_menupach
+    delete_colum = {"trip_id","part","trip_id_unique","line_id","direction","alternative","cluster","station_index","station_id","station_name","arrival_time","door_closing_time","latitude","longitude"}
+    for colum in delete_colum:
+        df=df.drop(colum,axis=1)
+    df.to_csv(preprocess_df_path, index=False, encoding="ISO-8859-8")
+    return preprocess_df_path
 
 #if __name__ == '__main__':
 #    part_df = "precent_5_of_datatrain_bus_schedule.csv"
-#    preprocess_df_path = preprocess_train_task_1(part_df)
+#    preprocess_df_path = preprocess_train_task_1_base_line(part_df)
