@@ -95,7 +95,8 @@ class LinearRegModel:
         return combine.drop(self.target_feature, axis=1), combine[self.target_feature]
 
     def predict(self, x):
-        return self.model.predict(x)
+        predictions = self.model.predict(x)
+        return predictions.clip(lower=0)
 
 
 
