@@ -120,7 +120,7 @@ def fix_row_task1(row,door_mean_gap_seconds ,arrival_mean_seconds):
     row, valid_row = fix_door_time(row,valid_row,door_mean_gap_seconds) 
     return row, valid_row
 
-def delete_row_task1(row):
+def delete_row_task1(row,test):
     # remove staion id and name
     del row[10]
     del row[9]
@@ -128,15 +128,16 @@ def delete_row_task1(row):
     del row[6]
     # remove the trip id unique station and trip id unique
     del row[3]
-    del row[2]
+    if not test:
+        del row[2]
     return row
 
-def preprocess_row_task_1(row ,door_mean_gap_seconds ,arrival_mean_seconds):
+def preprocess_row_task_1(row ,door_mean_gap_seconds ,arrival_mean_seconds,test):
     row, valid_row = fix_row_task1(row,door_mean_gap_seconds,arrival_mean_seconds)
-    row = delete_row_task1(row)
+    row = delete_row_task1(row,test)
     return row, valid_row
 
-def preprocess_train_task_1(df_path: str) -> str:
+def preprocess_train_task_1(df_path: str, test=False) -> str:
     """
     preprocess training data.
     Parameters
@@ -174,14 +175,23 @@ def preprocess_train_task_1(df_path: str) -> str:
         del header[9]
         del header[6]
         del header[3]
-        del header[2]
+        if not test:
+            del header[2]
         csv_writer.writerow(header)
         # Process the data
         for row in csv_reader:
-            processed_row, valid_row = preprocess_row_task_1(row,door_mean_gap_minuets,arrival_mean_seconds)
+            processed_row, valid_row = preprocess_row_task_1(row,door_mean_gap_minuets,arrival_mean_seconds,test)
             if(valid_row):
                 csv_writer.writerow(processed_row)
     return preprocess_df_path
+
+def preprocess_text_task_1(df_path: str) -> str:
+    preprocess_df = preprocess_train_task_1(df_path,True)
+    df = pd.read_csv(preprocess_df)
+    X,y = df.drop("trip_id_unique_station", axis=1), df.trip_id_unique_station
+    X.to_csv("test_to_model.csv", index=False, encoding="ISO-8859-8")
+    y.to_csv("xais.csv", index=False, encoding="ISO-8859-8")
+    return "test_to_model.csv", "xais.csv"
 
 def preprocess_train_task_1_base_line(df_path: str) -> str:
     preprocess_df_path = "baseline_preprocess_"+df_path
@@ -197,4 +207,4 @@ def preprocess_train_task_1_base_line(df_path: str) -> str:
 
 #if __name__ == '__main__':
 #    part_df = "precent_5_of_datatrain_bus_schedule.csv"
-#    preprocess_df_path = preprocess_train_task_1_base_line(part_df)
+#    X_path = preprocess_train_task_1(part_df)
