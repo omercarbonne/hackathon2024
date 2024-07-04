@@ -96,7 +96,7 @@ class LinearRegModel:
 
     def predict(self, x):
         predictions = self.model.predict(x)
-        return predictions.clip(lower=0)
+        return np.clip(predictions, a_min=0, a_max=None)
 
 
 
