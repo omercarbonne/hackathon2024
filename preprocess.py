@@ -189,7 +189,7 @@ def preprocess_train_task_1_base_line(df_path: str) -> str:
     # delete null rows
     df = df.dropna()
     # delete all colums except trip_id_unique_station, passengers_continue, arrival_is_estimated,mekadem_nipuach_luz,passengers_continue_menupach
-    delete_colum = {"trip_id","part","trip_id_unique","line_id","direction","alternative","cluster","station_index","station_id","station_name","arrival_time","door_closing_time","latitude","longitude"}
+    delete_colum = {"trip_id","part","trip_id_unique_station","trip_id_unique","line_id","direction","alternative","cluster","station_index","station_id","station_name","arrival_time","door_closing_time","latitude","longitude"}
     for colum in delete_colum:
         df=df.drop(colum,axis=1)
     df.to_csv(preprocess_df_path, index=False, encoding="ISO-8859-8")
