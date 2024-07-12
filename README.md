@@ -17,3 +17,4 @@ task_1 - library including the following:
 			preprocess1.py - python file with code to preprocess the train and the test of task 1
 			preprocess2.py - python file with code to preprocess the train and the test of task 2
 			model.py - python file with code of the ML model algorithm
+t
